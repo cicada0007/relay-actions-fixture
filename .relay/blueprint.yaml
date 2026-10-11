@@ -1,0 +1,6 @@
+version: 1
+test:
+  - sh check.sh
+runner:
+  github_actions: relay-checks.yml
+  timeout: 15m

@@ -1,0 +1,26 @@
+name: relay-checks
+on:
+  workflow_dispatch:
+    inputs:
+      relay_head:
+        description: The commit Relay is checking
+        required: false
+permissions:
+  contents: read
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.relay_head || github.sha }}
+      - name: Run sh check.sh
+        run: sh check.sh
+      - name: Upload relay-results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: relay-results
+          path: relay-results/
+          if-no-files-found: ignore
